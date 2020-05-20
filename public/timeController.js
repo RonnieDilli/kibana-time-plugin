@@ -1,12 +1,14 @@
 import _ from 'lodash';
 import dateMath from '@elastic/datemath';
 import moment from 'moment';
-import { SimpleEmitter } from 'ui/utils/simple_emitter';
+//import { SimpleEmitter } from 'ui/utils/simple_emitter';
+import { EventEmitter } from 'events';
 import { timefilter } from 'ui/timefilter';
 import { uiModules } from 'ui/modules';
 const module = uiModules.get('kibana/kibana-time-plugin', ['kibana', 'ktp-ui.bootstrap.carousel', 'BootstrapAddons']);
 
-const msearchEmitter = new SimpleEmitter();
+//const msearchEmitter = new SimpleEmitter();
+const msearchEmitter = new EventEmitter();
 module.config(function($httpProvider) {
   $httpProvider.interceptors.push(function() {
     return {
@@ -31,9 +33,9 @@ module.config(function($httpProvider) {
 
     //$scope.$listenAndDigestAsync(timefilter, 'timeUpdate', setTime);
 
-    $scope.$listen(timefilter, 'timeUpdate', () => {
-      $scope.$evalAsync(() => setTime());
-    });
+//    $scope.$listen(timefilter, 'timeUpdate', () => {
+//      $scope.$evalAsync(() => setTime());
+//    });
 
     var changeVisOff = $rootScope.$on(
       'change:vis',

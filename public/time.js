@@ -6,34 +6,37 @@ import 'plugins/kibana-time-plugin/bower_components/bootstrap-addons/dist/css/bo
 import 'plugins/kibana-time-plugin/bower_components/bootstrap-addons/dist/js/bootstrap-addons.js';
 import 'plugins/kibana-time-plugin/time.less';
 import 'plugins/kibana-time-plugin/timeController';
-import { VisFactoryProvider } from 'ui/vis/vis_factory';
-import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
+
+import { AngularVisController } from 'ui/vis/vis_types/angular_vis_type';
+import { visFactory } from 'ui/vis/vis_factory';
+import { setup as visualizations } from '../../../src/legacy/core_plugins/visualizations/public/np_ready/public/legacy';
+
 import visTemplate from 'plugins/kibana-time-plugin/time.html';
 import optionsTemplate from 'plugins/kibana-time-plugin/timeOptions.html';
 
-VisTypesRegistryProvider.register(TimeVisProvider);
+// register the provider with the visTypes registry
+visualizations.types.registerVisualization(TimeVisProvider);
 
-function TimeVisProvider(Private) {
-  const VisFactory = Private(VisFactoryProvider);
-
-  return VisFactory.createAngularVisualization({
-    name: 'time',
-    title: 'Time widget',
-    icon: 'clock',
-    description: 'Add time inputs to your dashboards.',
-    visConfig: {
-      template: visTemplate,
-      defaults: {
-          enable_quick: true,
-          enable_relative: true,
-          enable_absolut: true,
-          enable_animation: true,
-      }
-    },
+function TimeVisProvider() {
+    return visFactory.createBaseVisualization({
+        name: 'time',
+        title: 'Time widget',
+        icon: 'clock',
+        description: 'Add time inputs to your dashboards.',
+        visualization: AngularVisController,
+        visConfig: {
+            template: visTemplate,
+            defaults: {
+                enable_quick: false,
+                enable_relative: false,
+                enable_absolut: true,
+                enable_animation: false,
+            }
+        },
     editorConfig: {
-      optionsTemplate: optionsTemplate
+        optionsTemplate: optionsTemplate
     },
     requestHandler: 'none',
     responseHandler: 'none'
-  });
+    });
 }

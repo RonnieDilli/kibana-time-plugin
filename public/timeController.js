@@ -37,6 +37,12 @@ module.config(function($httpProvider) {
 //      $scope.$evalAsync(() => setTime());
 //    });
 
+    $scope.$listen(globalState, 'fetch_with_changes', diff => {
+          if (diff.includes('time')) {
+            setTime();
+          }
+    });
+
     var changeVisOff = $rootScope.$on(
       'change:vis',
       _.debounce(updateTimeslider, 200, false));
